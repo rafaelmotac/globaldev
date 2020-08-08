@@ -1,13 +1,9 @@
-package org.globaldev.domain;
+package org.globaldev.models;
 
-
-import java.util.List;
-
-public class UserTwo {
+public class AuthRequestModel {
 
     private String username;
     private String password;
-    private List<String> roles;
 
     public String getUsername() {
         return username;
@@ -25,11 +21,11 @@ public class UserTwo {
         this.password = password;
     }
 
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    @Override
+    public String toString() {
+        return "AuthRequestModel{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

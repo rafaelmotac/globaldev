@@ -1,5 +1,6 @@
 package org.globaldev.conf;
 
+import org.globaldev.security.WebSecurityConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class ServletSpringMvc extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -8,7 +9,8 @@ public class ServletSpringMvc extends AbstractAnnotationConfigDispatcherServletI
     protected Class<?>[] getRootConfigClasses() {
 
         return new Class[]{
-                AppWebConfiguration.class
+                AppWebConfiguration.class,
+                WebSecurityConfig.class
         };
     }
 
