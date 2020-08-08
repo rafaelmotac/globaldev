@@ -1,4 +1,4 @@
-With a machine with Maven and Java 8 installed, simply run on the pom.xml directory "mvn clean jetty:run-war"
+With a machine with Maven and Java 8 installed, simply run in the terminal on the pom.xml directory "mvn clean jetty:run-war"
 
 the application will be served in localhost:8080
 
