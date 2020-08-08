@@ -22,6 +22,19 @@ public interface TransactionMapper {
     @Mapping(source = "details.description", target = "description")
     TransactionModel transactionDtoToTransactionModel(TransactionDTO transactionDTO);
 
+
+    @Mapping(target = "this_account.id", source = "accountId")
+    @Mapping(target = "other_account.number", source = "counterPartyAccount")
+    @Mapping(target = "other_account.holder.name", source = "counterPartyName")
+    @Mapping(target = "other_account.metadata.image_URL", source = "counterPartyLogoPath")
+    @Mapping(target = "details.value.amount", source = "instructedAmount")
+    @Mapping(target = "details.value.currency", source = "instructedCurrency")
+    @Mapping(target = "details.type", source = "transactionType")
+    @Mapping(target = "details.description", source = "description")
+    TransactionDTO transactionModelToTransactionDto(TransactionModel transactionModel);
+
     List<TransactionModel> transactionDtoListToTransactionModelList(List<TransactionDTO> transactionDTOList);
+
+    List<TransactionDTO> transactionModelListToTransactionDtoList(List<TransactionModel> transactionModelList);
 
 }

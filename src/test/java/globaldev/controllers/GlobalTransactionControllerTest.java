@@ -1,102 +1,103 @@
-//package globaldev.controllers;
-//
-//import org.globaldev.controllers.GlobalTransactionController;
-//import org.globaldev.dtos.TransactionDTO;
-//import org.globaldev.mappers.TransactionMapper;
-//import org.globaldev.models.TransactionModel;
-//import org.globaldev.services.GlobalTransactionService;
-//import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.MediaType;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.test.context.junit4.SpringRunner;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@RunWith(SpringRunner.class)
-//@WebMvcTest(GlobalTransactionController.class)
-//public class GlobalTransactionControllerTest {
-//
-//    @Autowired
-//    private MockMvc mvc;
-//
-//    private GlobalTransactionService globalTransactionService;
-//    private TransactionMapper transactionMapper;
-//
-//    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalTransactionControllerTest.class);
-//
-//    @Autowired
-//    public GlobalTransactionControllerTest(
-//            GlobalTransactionService globalTransactionService,
-//            TransactionMapper transactionMapper
-//    ) {
-//        this.globalTransactionService = globalTransactionService;
-//        this.transactionMapper = transactionMapper;
-//
-//    }
-//
-//    @RequestMapping(value = "/transactions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    ResponseEntity<List<TransactionModel>> getTransactions() {
-//        LOGGER.info("getTransactions:: in");
-//        try {
-//            List<TransactionModel> model = transactionMapper.transactionDtoListToTransactionModelList(this.globalTransactionService.getTransactions());
-//
-//            LOGGER.info("getTransactions:: success!");
-//
-//            return new ResponseEntity<>(model, HttpStatus.OK);
-//
-//        } catch (Exception e) {
-//            LOGGER.error("getTransactions:: error!");
-//            LOGGER.error(e.getMessage());
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    @RequestMapping(value = "/transactions/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    ResponseEntity<List<TransactionModel>> getTransactionsByType(@PathVariable String type) {
-//        LOGGER.info("getTransactionsByType:: in");
-//        try {
-//            Optional<List<TransactionDTO>> transactions = this.globalTransactionService.getTransactionsByType(type);
-//
-//            List<TransactionModel> transactionModels = this.transactionMapper.transactionDtoListToTransactionModelList(transactions.orElse(new ArrayList<>()));
-//
-//            LOGGER.info("getTransactionsByType:: success!");
-//
-//            return new ResponseEntity<>(transactionModels, HttpStatus.OK);
-//
-//        } catch (Exception e) {
-//            LOGGER.error("getTransactionsByType:: error!");
-//            LOGGER.error(e.getMessage());
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    @RequestMapping(value = "/transactions/count/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    ResponseEntity<Integer> getAmountTransactionsByType(@PathVariable String type) {
-//
-//        LOGGER.info("getAmountTransactionsByType:: in");
-//
-//        try {
-//            Integer transactionsCount = this.globalTransactionService.getTotalAmountByTransactionType(type);
-//
-//            LOGGER.info("getAmountTransactionsByType:: success!");
-//
-//            return new ResponseEntity<>(transactionsCount, HttpStatus.OK);
-//
-//        } catch (Exception e) {
-//            LOGGER.error("getAmountTransactionsByType:: error!");
-//            LOGGER.error(e.getMessage());
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//}
+package globaldev.controllers;
+
+import org.globaldev.controllers.GlobalTransactionController;
+import org.globaldev.mappers.TransactionMapper;
+import org.globaldev.mappers.TransactionMapperImpl;
+import org.globaldev.models.TransactionModel;
+import org.globaldev.services.impl.GlobalTransactionServiceImpl;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
+public class GlobalTransactionControllerTest {
+
+    @Test
+    public void verifyIfTransactionsAreReturned() {
+        GlobalTransactionServiceImpl testImpl = new GlobalTransactionServiceImpl();
+
+        TransactionMapper mapper = new TransactionMapperImpl();
+        GlobalTransactionController testController = new GlobalTransactionController(testImpl, mapper);
+
+        try {
+            Assert.assertEquals(HttpStatus.OK,testController.getTransactions().getStatusCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void verifyIfTransactionsAreSepaType() {
+        GlobalTransactionServiceImpl testImpl = new GlobalTransactionServiceImpl();
+
+        TransactionMapper mapper = new TransactionMapperImpl();
+        GlobalTransactionController testController = new GlobalTransactionController(testImpl, mapper);
+
+        String type = "SEPA";
+
+        try {
+            ResponseEntity<List<TransactionModel>> result = testController.getTransactionsByType(type);
+            Assert.assertEquals(HttpStatus.OK,result.getStatusCode());
+            Assert.assertNotNull(result.getBody().get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void verifyIfTransactionsAreTypeEmpty() {
+        GlobalTransactionServiceImpl testImpl = new GlobalTransactionServiceImpl();
+
+        TransactionMapper mapper = new TransactionMapperImpl();
+        GlobalTransactionController testController = new GlobalTransactionController(testImpl, mapper);
+
+        String type = "dasdsadas";
+
+        try {
+            ResponseEntity<List<TransactionModel>> result = testController.getTransactionsByType(type);
+            Assert.assertEquals(HttpStatus.OK,result.getStatusCode());
+            Assert.assertTrue(result.getBody().size() == 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void verifyIfTransactionsReturnAmountTypeMoreThanZero() {
+        GlobalTransactionServiceImpl testImpl = new GlobalTransactionServiceImpl();
+
+        TransactionMapper mapper = new TransactionMapperImpl();
+        GlobalTransactionController testController = new GlobalTransactionController(testImpl, mapper);
+
+        String type = "SEPA";
+
+        try {
+            ResponseEntity<Integer> result = testController.getAmountTransactionsByType(type);
+            Assert.assertEquals(HttpStatus.OK,result.getStatusCode());
+            Assert.assertTrue(result.getBody() > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void verifyIfTransactionsReturnAmountTypeZero() {
+        GlobalTransactionServiceImpl testImpl = new GlobalTransactionServiceImpl();
+
+        TransactionMapper mapper = new TransactionMapperImpl();
+        GlobalTransactionController testController = new GlobalTransactionController(testImpl, mapper);
+
+        String type = "SADASDASDAS";
+
+        try {
+            ResponseEntity<Integer> result = testController.getAmountTransactionsByType(type);
+            Assert.assertEquals(HttpStatus.OK,result.getStatusCode());
+            Assert.assertTrue(result.getBody() == 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}

@@ -14,7 +14,7 @@ public class UserRepositoryFakeImpl implements UserRepositoryFake {
 
     private List<UserTwo> userList;
 
-    public UserRepositoryFakeImpl(){
+    public UserRepositoryFakeImpl() {
 
         this.userList = new ArrayList<>();
 
@@ -38,7 +38,15 @@ public class UserRepositoryFakeImpl implements UserRepositoryFake {
     }
 
     @Override
-    public Optional<UserTwo> findByUsername(String username) {
-        return Optional.ofNullable(this.userList.stream().filter(user -> user.getUsername().equals(username)).collect(Collectors.toList()).get(0));
+    public UserTwo findByUsername(String username) {
+        List<UserTwo> result = this.userList.stream().filter(user -> user.getUsername().equalsIgnoreCase(username)).collect(Collectors.toList());
+
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+
+
     }
 }

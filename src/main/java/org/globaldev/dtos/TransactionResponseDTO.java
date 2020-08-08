@@ -8,8 +8,4 @@ public class TransactionResponseDTO {
     public List<TransactionDTO> getTransactions() {
         return transactions;
     }
-
-    public void setTransactions(List<TransactionDTO> transactions) {
-        this.transactions = transactions;
-    }
 }

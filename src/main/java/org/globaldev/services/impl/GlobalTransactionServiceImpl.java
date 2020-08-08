@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class GlobalTransactionServiceImpl implements GlobalTransactionService {
 
-    @Value("${api.url}")
-    private String transactionsUrl;
+    private static final String transactionsUrl = "https://apisandbox.openbankproject.com/obp/v1.2.1/banks/rbs/accounts/savings-kids-john/public/transactions";
 
     public List<TransactionDTO> getTransactions() throws IOException {
         return recoverTransactionFromGet();

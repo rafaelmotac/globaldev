@@ -1,4 +1,4 @@
-package org.globaldev.controllers.core;
+package org.globaldev.domain;
 
 
 public class RefreshTokenRequest {

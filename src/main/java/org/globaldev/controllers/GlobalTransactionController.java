@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,7 +40,7 @@ public class GlobalTransactionController {
     }
 
     @RequestMapping(value = "/transactions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<List<TransactionModel>> getTransactions() {
+    public ResponseEntity<List<TransactionModel>> getTransactions() {
         LOGGER.info("getTransactions:: in");
         try {
             List<TransactionModel> model = transactionMapper.transactionDtoListToTransactionModelList(this.globalTransactionService.getTransactions());
@@ -56,7 +57,7 @@ public class GlobalTransactionController {
     }
 
     @RequestMapping(value = "/transactions/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<List<TransactionModel>> getTransactionsByType(@PathVariable String type) {
+    public ResponseEntity<List<TransactionModel>> getTransactionsByType(@PathVariable String type) {
         LOGGER.info("getTransactionsByType:: in");
         try {
             Optional<List<TransactionDTO>> transactions = this.globalTransactionService.getTransactionsByType(type);
@@ -75,7 +76,7 @@ public class GlobalTransactionController {
     }
 
     @RequestMapping(value = "/transactions/count/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Integer> getAmountTransactionsByType(@PathVariable String type) {
+    public ResponseEntity<Integer> getAmountTransactionsByType(@PathVariable String type) {
 
         LOGGER.info("getAmountTransactionsByType:: in");
 

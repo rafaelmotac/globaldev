@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface UserRepositoryFake {
 
-    Optional<UserTwo> findByUsername(String username);
+    UserTwo findByUsername(String username);
 }
