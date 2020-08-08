@@ -10,18 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController()
+@RequestMapping("/transactions")
 public class GlobalTransactionController {
 
     private GlobalTransactionService globalTransactionService;
@@ -39,7 +38,7 @@ public class GlobalTransactionController {
 
     }
 
-    @RequestMapping(value = "/transactions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TransactionModel>> getTransactions() {
         LOGGER.info("getTransactions:: in");
         try {
@@ -56,7 +55,7 @@ public class GlobalTransactionController {
         }
     }
 
-    @RequestMapping(value = "/transactions/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TransactionModel>> getTransactionsByType(@PathVariable String type) {
         LOGGER.info("getTransactionsByType:: in");
         try {
@@ -75,7 +74,7 @@ public class GlobalTransactionController {
         }
     }
 
-    @RequestMapping(value = "/transactions/count/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/count/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getAmountTransactionsByType(@PathVariable String type) {
 
         LOGGER.info("getAmountTransactionsByType:: in");
