@@ -65,6 +65,7 @@
                         <exclude>org/globaldev/dtos/**/*</exclude>
                         <exclude>org/globaldev/domain/**/*</exclude>
                         <exclude>org/globaldev/conf/**/*</exclude>
+                        <exclude>org/globaldev/security/**/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
